@@ -19,7 +19,7 @@ def whale_alert_extractor() -> Dict[str, List[str]] | None:
     logger = Logger("whale_alert_extractor_logger")
     file_handler = FileHandler('logs.log')
     logger.setLevel(DEBUG)
-    logger.info("Iniciando")
+    logger.debug("Iniciando")
     logger.addHandler(file_handler)
 
     url = "https://whale-alert.io/whales.html"
@@ -50,9 +50,20 @@ def whale_alert_extractor() -> Dict[str, List[str]] | None:
 
 data = whale_alert_extractor()
 
-whale_alert_df = pd.DataFrame(data)
+def save_to_csv(data: Dict[str, List[str]]):
 
-whale_alert_df.to_csv(f"data/whales_{datetime.now().strftime('%Y-%m-%d')}.csv", index=False, encoding='utf-8')
+    logger = Logger("save_to_csv_logger")
+    file_handler = FileHandler('logs.log')
+    logger.setLevel(DEBUG)
+    logger.debug("Iniciando")
+    logger.addHandler(file_handler)
+
+    if not data: 
+        return None
+
+    whale_alert_df = pd.DataFrame(data)
+    whale_alert_df.to_csv(f"data/whales_{datetime.now().strftime('%Y-%m-%d')}.csv", index=False, encoding='utf-8')
+    logger.info(f'Datos guardados en {datetime.now().strftime("%Y-%m-%d")}.csv')
 
 
 
