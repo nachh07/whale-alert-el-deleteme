@@ -14,6 +14,13 @@ import pandas as pd
 
 url = "https://whale-alert.io/whales.html"
 response = requests.get(url)
-print(response)
+response.encoding = 'utf-8'
+
+soup = BeautifulSoup(response.content, 'html.parser')
+table = soup.select('table.table tbody tr')
+
+
+
+
 
 
