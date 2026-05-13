@@ -48,8 +48,6 @@ def whale_alert_extractor() -> Dict[str, List[str]] | None:
         logger.error(f'Error al extraer datos: {e}')
         return None
 
-data = whale_alert_extractor()
-
 def save_to_csv(data: Dict[str, List[str]]):
 
     logger = Logger("save_to_csv_logger")
