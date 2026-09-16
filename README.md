@@ -34,6 +34,17 @@ Con el entorno activado, instala las dependencias:
 pip install -r requirements.txt
 ```
 
+## Ejecucion
+
+Desde la raiz del proyecto, ejecuta el flujo completo:
+
+```powershell
+python main.py
+```
+
+El programa extrae los datos de Whale Alert, genera el CSV en `data/` y lo
+sube al bucket configurado en MinIO.
+
 Para salir del entorno virtual:
 
 ```bash

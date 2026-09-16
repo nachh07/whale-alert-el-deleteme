@@ -23,16 +23,21 @@ def get_minio_client() -> boto3.client:
     access_key = os.getenv("MINIO_ACCESS_KEY", "minioadmin")
     secret_key = os.getenv("MINIO_SECRET_KEY", "minioadmin")
 
-    client = boto3.client(
-        "s3",
-        endpoint_url=endpoint,
-        aws_access_key_id=access_key,
-        aws_secret_access_key=secret_key,
-        config=botocore.config.Config(
-            signature_version="s3v4",
-            s3={"addressing_style": "path"},
-        ),
-    )
+    try: 
+        client = boto3.client(
+            "s3",
+            endpoint_url=endpoint,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key,
+            config=botocore.config.Config(
+                signature_version="s3v4",
+                s3={"addressing_style": "path"},
+            ),
+        )
+    except Exception as e: 
+        logger.error("error al crear el cliente")
+        raise (str(e))
+                
     logger.info(f"Cliente MinIO creado para endpoint: {endpoint}")
     return client
 
@@ -64,16 +69,15 @@ def upload_file_to_minio(file_path: str) -> None:
             client.upload_fileobj(f, bucket_name, file_path)
 
         logger.info(f"Archivo '{file_path}' subido correctamente al bucket '{bucket_name}'.")
-        print(f"[OK] Archivo '{file_path}' subido a MinIO bucket '{bucket_name}'.")
 
     except FileNotFoundError as e:
         logger.error(f"No se encontró el archivo '{file_path}': {e}")
-        print(f"[ERROR] Archivo no encontrado: {file_path}")
     except (BotoCoreError, ClientError) as e:
         logger.error(f"Error al subir el archivo '{file_path}': {e}")
-        print(f"[ERROR] MinIO: {e}")
 
 
 if __name__ == "__main__":
-    file_path = f"data/whales_{datetime.now().strftime('%Y-%m-%d')}.csv"
-    upload_file_to_minio(file_path)
+    pass
+    #file_path = f"data/whales_{datetime.now().strftime('%Y-%m-%d')}.csv"
+    #upload_file_to_minio(file_path)
+    

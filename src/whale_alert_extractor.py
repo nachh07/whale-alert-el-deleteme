@@ -48,7 +48,7 @@ def whale_alert_extractor() -> Dict[str, List[str]] | None:
         logger.error(f'Error al extraer datos: {e}')
         return None
 
-def save_to_csv(data: Dict[str, List[str]]):
+def save_to_csv(data: Dict[str, List[str]]) -> None:
 
     logger = Logger("save_to_csv_logger")
     file_handler = FileHandler('logs.log')
@@ -57,7 +57,7 @@ def save_to_csv(data: Dict[str, List[str]]):
     logger.addHandler(file_handler)
 
     if not data: 
-        return None
+        raise ValueError(f'No hay datos {len(data)}')
 
     whale_alert_df = pd.DataFrame(data)
     whale_alert_df.to_csv(f"data/whales_{datetime.now().strftime('%Y-%m-%d')}.csv", index=False, encoding='utf-8')
